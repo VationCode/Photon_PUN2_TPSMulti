@@ -15,11 +15,23 @@ MonoBehaviour:
   m_GroupName: Remote
   m_GUID: 0a98f46a4f329b447b3b649c0157ab6c
   m_SerializeEntries:
+  - m_GUID: 108ec8687bfd26244a310074e7132075
+    m_Address: Cube
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PlayerInfoList
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 553113b78b321af45b54ef71611dc9a3
     m_Address: Player
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Player
+    - PlayerInfoList
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bba56b06a9ebe354d8af0c89fc1b822c
+    m_Address: Capsule
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PlayerInfoList
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 110c949c06edfdf4caf38f5711fbfb2c, type: 2}

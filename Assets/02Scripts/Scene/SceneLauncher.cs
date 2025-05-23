@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DUS.Addressable;
+using DUS.AssetLoad;
 using DUS.Scene;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -18,6 +18,6 @@ public class SceneLauncher : MonoBehaviour
         {
             m_nextSceneNeedAddressableList.Add(item.RuntimeKey.ToString());
         }
-        AddressableAssetLoad.Instance.SetNextSceneNeedAddressable(m_nextSceneNeedAddressableList);
+        AssetLoader.Instance.SetNextSceneNeedAddressable(m_nextSceneNeedAddressableList);
     }
 }

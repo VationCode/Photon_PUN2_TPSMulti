@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 2fceca78070838f4f80b560c84dae0c0
   m_currentHash:
     serializedVersion: 2
-    Hash: d0546f89f1e955c43ea053d4ebbb8d86
+    Hash: 2dce6cc4b94b0bdb44aa8f08254c6e01
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
@@ -50,9 +50,9 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 71c3da31aef699441856a801aeb0153e
+    m_Id: a7af63fb338ecb74dabc9a0e4709ef6a
   m_RemoteCatalogLoadPath:
-    m_Id: 58e380fd5c3062f4fb1e8f7f3de3d526
+    m_Id: a716d7616d840174883e85ca6c477c6d
   m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
@@ -84,7 +84,7 @@ MonoBehaviour:
         m_Value: D:/InvaderSurvive/Assets
     - m_InheritedParent: 
       m_Id: cea2e6aa0855a754990e8419e5f5daec
-      m_ProfileName: Remote
+      m_ProfileName: Window
       m_Values:
       - m_Id: 01ec9b35a02efea419972e154f7eda8a
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
-    - Player
+    - PlayerInfoList
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 0205d30dedd3ab1458ba6b65fa4c45d5, type: 2}

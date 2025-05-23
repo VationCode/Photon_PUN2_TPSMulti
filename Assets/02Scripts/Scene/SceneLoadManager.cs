@@ -1,16 +1,20 @@
 using System.Collections;
-using DUS.Addressable;
+using DUS.AssetLoad;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 namespace DUS.Scene
 {
     public enum SceneType
     {
-        Boot,
-        Loaby,
-        InGame,
+        Loaby = 0,
+        Boot = 1,
+        InGame = 2,
+        InGame2 = 3,
+        Test = 4
     }
     public class SceneLoadManager : MonoBehaviour
     {
@@ -18,7 +22,7 @@ namespace DUS.Scene
         public static SceneType m_NextScene;
 
         private Coroutine m_asyncLoadCR;
-
+        List<string> startAddressableList = new List<string>();
         private void Awake()
         {
             if (Instance == null)
@@ -31,35 +35,25 @@ namespace DUS.Scene
 
         private void Start()
         {
-            m_NextScene = SceneType.Loaby;
-            List<string> startAddressableList = new List<string>();
-            startAddressableList.Add("Player");
-            AddressableAssetLoad.Instance.SetNextSceneNeedAddressable(startAddressableList);
-
-            LoadGameScene(m_NextScene);
+            startAddressableList.Add("PlayerInfoList");
+            m_NextScene = SceneType.Test;
+            
+            PushNextInfoToBootSceneAndLoadBootScene(m_NextScene, startAddressableList);
         }
 
-        public void SetNextScene()
+        // 다음 씬으로 넘어가는 과정에서 진행
+        public void PushNextInfoToBootSceneAndLoadBootScene(SceneType nextScene, List<string> nextNeedAssetList)
         {
-
+            m_NextScene = nextScene;
+            AssetLoader.Instance.SetNextSceneNeedAddressable(nextNeedAssetList);
+            // TODO : 에셋들 정보(위치값, 상태 등등) 저장
+            SceneManager.LoadScene(1);
         }
 
-        public void LoadGameScene(SceneType nextScene)
+        public void LoadNextScene(SceneType nextScene)
         {
-            if(m_asyncLoadCR != null)
-            {
-                StopCoroutine(m_asyncLoadCR);
-            }
-            m_asyncLoadCR = StartCoroutine(AsyncLoadSceneCoroutine());
-        }
-
-        private IEnumerator AsyncLoadSceneCoroutine()
-        {
-            //yield return AddressableAssetLoad.Instance.DownLoadNextAddressableList();
-
-            //var handle = Addressables.LoadAssetAsync<GameObject>();
-
-            yield return null;
+            //Boot Scene 진입
+            SceneManager.LoadScene((int)nextScene);
         }
     }
 }
