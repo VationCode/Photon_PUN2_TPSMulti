@@ -2,7 +2,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static GameManager Instance { get; private set; }
+    public int m_StartCheck = -1;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void SetStartCheck()
+    {
+        m_StartCheck = 0;
+    }
+
     void Start()
     {
         
