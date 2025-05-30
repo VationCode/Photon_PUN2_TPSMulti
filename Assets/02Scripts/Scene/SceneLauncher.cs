@@ -7,17 +7,26 @@ using UnityEngine.AddressableAssets;
 public class SceneLauncher : MonoBehaviour
 {
     [SerializeField] SceneType m_currentSceneType;
-    [SerializeField] List<AssetReference> AddressableList = new List<AssetReference>();
+    [SerializeField] List<AssetReference> m_nextNeedAddressableList = new List<AssetReference>();
 
     List<string> m_nextSceneNeedAddressableList = new List<string>();
 
+    // 프리팹 통해서 주소키 값 받아오기
+    // Label을 통해서 가져오는건 AssetLoadManager에서 처리
     public void GetNextNeedSceneInfo()
     {
         SceneLoadManager.m_NextScene = m_currentSceneType;
-        foreach (var item in AddressableList)
+
+        if(m_nextNeedAddressableList.Count == 0)
+        {
+            Debug.Log("No need addressable list");
+            return;
+        }
+
+        foreach (var item in m_nextNeedAddressableList)
         {
             m_nextSceneNeedAddressableList.Add(item.RuntimeKey.ToString());
         }
-        AssetLoader.Instance.SetNextSceneNeedAddressable(m_nextSceneNeedAddressableList);
+        AssetLoadManager.Instance.SetNextSceneNeedAddressable(m_nextSceneNeedAddressableList);
     }
 }
