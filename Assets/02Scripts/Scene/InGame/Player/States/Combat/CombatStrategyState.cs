@@ -1,4 +1,4 @@
-using DUS.Player.Combat;
+using DUS.PlayerCore.Combat;
 
 public abstract class CombatStrategyState : IBaseState
 {

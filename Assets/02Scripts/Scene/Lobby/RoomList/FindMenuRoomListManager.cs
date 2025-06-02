@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace DUS.UI
 
         public string m_getRoomName { get; private set; }
 
-        public Dictionary<string, FindRoomMenuRoomButtonItem> m_roomListDict { get; private set; } = new Dictionary<string, FindRoomMenuRoomButtonItem>();
+        public Dictionary<string, FindRoomMenuJoinBtn> m_roomListDict { get; private set; } = new Dictionary<string, FindRoomMenuJoinBtn>();
 
         private void Start()
         {
@@ -24,17 +25,6 @@ namespace DUS.UI
         {
         }
         // 방생성메뉴UI에서 생성 버튼
-        public string OnRoomCreate(string roomName)
-        {
-            m_getRoomName = roomName;
-            if (string.IsNullOrEmpty(m_getRoomName))
-            {
-                m_getRoomName = "Room" + Random.Range(0, 1000);
-            }
-
-            CreateRoomButtonItem(m_getRoomName);
-            return m_getRoomName;
-        }
 
         public void FailedRoomCrate()
         {
@@ -49,18 +39,27 @@ namespace DUS.UI
         public void OnRoomUpdateList(bool isRemove, string roomName)
         {
             if (isRemove) RemoveRoomList(roomName);
-            else CreateRoomButtonItem(roomName);
+            //else UpdateFindRoomMenuButtonList(roomName);
         }
-        // 유저들이 방 생성 시마다 FindMenuUI에 방리스트(버튼) 생성
-        private void CreateRoomButtonItem(string createRoomName)
+
+        // 네트워크에서 방 업데이트 시 마다 리스트들 새로 생성
+        // TODO : 전부 새로하기보다는 차후 관리를 통해 일부만 생성 삭제 되도록
+        public void UpdateFindRoomMenuButtonList(List<RoomInfo> createRoomList)
         {
-            if (m_roomListDict.ContainsKey(createRoomName)) return; // 이미 존재하는 방 이름이면 생성하지 않음
+            // 전체 삭제
+            foreach(var item in m_roomListDict.Keys)
+            {
+                Destroy(m_roomListDict[item].gameObject);
+            }
+            m_roomListDict.Clear();
 
-            GameObject roomList = Instantiate(m_joinRoomBtnItemPrefab, m_roomListScrollViewContent);
-            FindRoomMenuRoomButtonItem joinBtnInfo = roomList.GetComponent<FindRoomMenuRoomButtonItem>();
-
-            joinBtnInfo.SetRoomListInfo(createRoomName);
-            m_roomListDict.Add(createRoomName, joinBtnInfo);
+            // 새로 리스트 생성
+            foreach(var roomInfo in createRoomList)
+            {
+                GameObject _roomList = Instantiate(m_joinRoomBtnItemPrefab, m_roomListScrollViewContent);
+                FindRoomMenuJoinBtn _joinBtn = _roomList.GetComponent<FindRoomMenuJoinBtn>();
+                m_roomListDict.Add(roomInfo.Name, _joinBtn);
+            }
         }
 
         private void RemoveRoomList(string createRoomName)

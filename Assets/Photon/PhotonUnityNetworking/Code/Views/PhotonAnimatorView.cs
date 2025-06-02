@@ -121,7 +121,9 @@ namespace Photon.Pun
 
         private void Awake()
         {
-            this.m_Animator = GetComponent<Animator>();
+            // =========================================== 원본 변경250531
+            //this.m_Animator = GetComponent<Animator>();
+            m_Animator = GetComponentInChildren<Animator>();
         }
 
         private void Update()

@@ -1,6 +1,6 @@
 using UnityEngine;
-using DUS.Player.Locomotion;
-using DUS.Player;
+using DUS.PlayerCore.Locomotion;
+using DUS.PlayerCore;
 using System.Threading.Tasks;
 
 public class JumpState : LocomotionStrategyState

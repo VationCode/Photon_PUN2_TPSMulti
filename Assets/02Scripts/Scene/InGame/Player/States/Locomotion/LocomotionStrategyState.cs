@@ -1,6 +1,6 @@
 // Strategy ∆–≈œ
 using UnityEngine;
-using DUS.Player.Locomotion;
+using DUS.PlayerCore.Locomotion;
 using System.Collections.Generic;
 
 public abstract class LocomotionStrategyState : IBaseState

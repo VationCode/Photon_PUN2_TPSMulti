@@ -3,7 +3,7 @@
 // ========================================
 using UnityEngine;
 
-namespace DUS.Player {
+namespace DUS.PlayerCore {
     public static class PlayerPhysicsUtility
     {
         public static void SetVelocityXZ(Rigidbody rigid, Vector3 velocityXZ)

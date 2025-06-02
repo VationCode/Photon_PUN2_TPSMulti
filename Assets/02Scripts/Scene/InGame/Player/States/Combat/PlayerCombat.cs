@@ -1,13 +1,13 @@
 using UnityEngine;
 
-namespace DUS.Player.Combat {
+namespace DUS.PlayerCore.Combat {
     public class PlayerCombat
     {
-        private PlayerCore m_playerCore;
+        private global::PlayerCore m_playerCore;
         private Animator m_animator;
         private CombatStateUtility m_stateUtility;
 
-        public PlayerCombat(PlayerCore playerCore)
+        public PlayerCombat(global::PlayerCore playerCore)
         {
             m_playerCore = playerCore;
             m_animator = m_playerCore.m_AnimationManager.m_Animator;

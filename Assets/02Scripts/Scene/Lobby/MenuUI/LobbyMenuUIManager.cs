@@ -12,7 +12,6 @@ namespace DUS.UI
         FindRoomMenuUI,
         RoomMenuUI,
         SettingsMenuUI,
-        Exit
     }
 
     public class LobbyMenuUIManager : MonoBehaviour, IInitializeAtStart
@@ -25,6 +24,9 @@ namespace DUS.UI
 
         [Header("[Get RoomMenu]")]
         [SerializeField] TMP_Text m_roomMenuName;
+
+        [Header("[Get RoomMenu]")]
+        [SerializeField] Button m_startBtn;
 
         private List<LobbyMenuTypeInfo> m_lobbyMenuList; // 메뉴들 리스트
         private void Awake()
@@ -61,12 +63,13 @@ namespace DUS.UI
             string playerName = m_inputFieldPlayerName.text;
             if (string.IsNullOrEmpty(playerName))
             {
-                playerName = "Player" + Random.Range(0, 1000);
-                SetInputFieldPlayerName(playerName);
+                playerName = "PlayerCore" + Random.Range(0, 1000);
             }
+            SetPlayerName(playerName);
             return playerName;
         }
-        public void SetInputFieldPlayerName(string playerName)
+
+        public void SetPlayerName(string playerName)
         {
             m_inputFieldPlayerName.text = playerName;
         }
@@ -79,13 +82,18 @@ namespace DUS.UI
                 roomName = "Room" + UnityEngine.Random.Range(0, 1000);
                 m_inpuFieldRoomName.text = roomName;   
             }
-            SetRoomMenuNameText(roomName);
+            SetRoomMenuRoomName(roomName);
             return roomName;
         }
 
-        public void SetRoomMenuNameText(string roomName)
+        public void SetRoomMenuRoomName(string roomName)
         {
             m_roomMenuName.text = roomName;
+        }
+
+        public void ActivateStartInGameBtn(bool isBool)
+        {
+            m_startBtn.gameObject.SetActive(isBool);
         }
     }
 }

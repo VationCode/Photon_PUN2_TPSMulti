@@ -4,13 +4,13 @@
 using System;
 using UnityEngine;
 
-namespace DUS.Player.Locomotion {
+namespace DUS.PlayerCore.Locomotion {
     public class PlayerLocomotion
     {
-        private PlayerCore m_playerCore;
+        private global::PlayerCore m_playerCore;
         private Animator m_animator;
         public LocomotionStateUtility m_StateUtility { get; private set; }
-        public PlayerLocomotion(PlayerCore playerCore)
+        public PlayerLocomotion(global::PlayerCore playerCore)
         {
             m_playerCore = playerCore;
             m_animator = m_playerCore.m_AnimationManager.m_Animator;

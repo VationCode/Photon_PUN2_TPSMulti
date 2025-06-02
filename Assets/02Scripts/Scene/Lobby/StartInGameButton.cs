@@ -1,4 +1,4 @@
-using DUS.Scene;
+using DUS.scene;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;

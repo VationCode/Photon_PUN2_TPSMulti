@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class LobbyNetworkManager : MonoBehaviourPunCallbacks, IInitializeAtStart
+public class LobbyNetworkManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] LobbySceneManager m_lobbySceneManager;
+    /*[SerializeField] LobbySceneManager m_lobbySceneManager;
 
     [Header("[Get RoomMenu]")]
     [SerializeField] Button m_startBtn;
@@ -41,18 +41,13 @@ public class LobbyNetworkManager : MonoBehaviourPunCallbacks, IInitializeAtStart
         }
     }
 
-    /*public void StartInGame(int num)
-    {
-        PhotonNetwork.LoadLevel(num); // InGame 씬 로드
-    }*/
-
     // 서버에 연결되었을 때 호출되는 메서드
-    public override void OnConnectedToMaster()
+    *//*public override void OnConnectedToMaster()
     {
         // 부트씬에서 처리하기로
-        //PhotonNetwork.JoinLobby();
-        //PhotonNetwork.AutomaticallySyncScene = true; // 마스터 클라이언트가 씬을 변경하면 다른 클라이언트들도 자동으로 동기화됨
-    }
+        PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true; // 마스터 클라이언트가 씬을 변경하면 다른 클라이언트들도 자동으로 동기화됨
+    }*//*
 
     // 서버와 연결이 끊어졌을 때 호출되는 메서드
     public override void OnDisconnected(DisconnectCause cause)
@@ -80,7 +75,7 @@ public class LobbyNetworkManager : MonoBehaviourPunCallbacks, IInitializeAtStart
         return m_isRoomCreated; // 방 생성 성공 여부 반환
     }
 
-    // 방 생성 혹은 Join 시 호출
+    // 방 생성 혹은 JoinLobby 시 호출
     public override void OnJoinedRoom()
     {
         // 현재 방에 접속해 있는 본인 포함 모든 플레이어들
@@ -147,5 +142,5 @@ public class LobbyNetworkManager : MonoBehaviourPunCallbacks, IInitializeAtStart
         m_PlayerName = PhotonNetwork.NickName;
         m_CurrentRoomName = PhotonNetwork.CurrentRoom.Name;
         m_CurrentJoinPlayers = PhotonNetwork.PlayerList;
-    }
+    }*/
 }
