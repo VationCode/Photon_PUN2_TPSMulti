@@ -3,7 +3,10 @@
 // 0529 조인한 유저의 플레이어리스트 생성이안됨, 방 나갔을 시 나간 사람 아직 작업x
 
 using System;
-using DUS.Scene;
+using System.Collections.Generic;
+using DUS.AssetLoad;
+using DUS.Network;
+using DUS.scene;
 using DUS.UI;
 using Photon.Pun;
 using Photon.Realtime;
@@ -17,13 +20,15 @@ public class LobbySceneManager : MonoBehaviour
     [SerializeField]
     GameObject UICanvas;
 
+    public NextSceneRequireData m_nextSceneRequireData;
     // =========================== 모듈
     private LobbyMenuUIManager m_lobbyMenuUIManager;
     private FindMenuRoomListManager m_findMenuRoomListManager;
     private PlayerListUIManager m_playerListManager;
-    private LobbyNetworkManager m_networkManager;
 
     public event Action InitializeAtStart;
+    
+    private INetworkService m_networkService;
 
     private void Awake()
     {
@@ -39,141 +44,96 @@ public class LobbySceneManager : MonoBehaviour
         m_findMenuRoomListManager = UICanvas.GetComponent<FindMenuRoomListManager>();
         m_playerListManager = UICanvas.GetComponent<PlayerListUIManager>();
 
-        m_networkManager = GetComponent<LobbyNetworkManager>();
+        m_networkService = NetworkManager.Service;
     }
+
 
     private void Start()
     {
         InitializeAtStart?.Invoke();
+
+        m_networkService.UpdateRoomList += UpdateFindMenuRoomList;
+        m_networkService.JoinedPlayerList += JoinedPlayerList;
     }
     public void StartInGame(int sceneNum)
     {
-        m_networkManager.SaveInfo();
-        SaveNetworkInfo.Instance.SaveInfo(m_networkManager.m_PlayerName, m_networkManager.m_CurrentRoomName, m_networkManager.m_CurrentJoinPlayers);
-        SceneLoadManager.Instance.PushNextInfoToBootSceneAndLoadBootScene(SceneType.InGame);
+        /*m_networkManager.SaveInfo();
+        SaveNetworkInfo.Instance.SaveInfo(m_networkManager.m_PlayerName, m_networkManager.m_CurrentRoomName, m_networkManager.m_CurrentJoinPlayers);*/
+        SceneLoadManager.Instance.LoadNextScene_Boot(SceneType.InGame, m_nextSceneRequireData);
     }
 
-    // 각 버튼들 OnClick에 전달
+    #region ======================================================================= Button 클릭
+    // 메뉴 이동
     public void GoMenuUI(GoMenuUIType mainMenuType)
     {
         m_lobbyMenuUIManager.GoMenuUI(mainMenuType);
     }
 
-    // 방 생성 시
-    public void OnRoomCreate()
+    // 방 생성
+    // TODO : 방제 중복 생성 방지 필요
+    public void CreateRoom()
     {
+        // 1. 방 이름과 내 닉네임 가져오기
         string roomName = m_lobbyMenuUIManager.GetInputFieldRoomName();
         string playerName = m_lobbyMenuUIManager.GetInputFieldPlayerName();
-        m_lobbyMenuUIManager.SetInputFieldPlayerName(playerName);
 
-        m_networkManager.OnRoomCreate(roomName, playerName);
+        // 2. 논리적인 네트워크 방 생성
+        m_networkService.CreateRoom(roomName, playerName);
 
-        // 방 생성 실패시
-        if (!m_networkManager.m_isRoomCreated)
+        // 3. 방 생성 되었는지 체크. 안되었을 시 3초정도에도 안만들어지면 로그
+        float time = 0;
+        while (!m_networkService.CheckCreateRoom())
         {
-            return;
-            //FailedRoomCrate();
+            time += Time.deltaTime;
+            if(time >= 3)
+            {
+                Debug.LogError("CreateRoomFailed");
+            }
+            m_networkService.CreateRoom(roomName, playerName);
         }
-        
-        m_playerListManager.OnRoomCreate(playerName);
-        m_findMenuRoomListManager.OnRoomCreate(roomName);
+
+        // 4 룸 메뉴UI로 이동
+        GoMenuUI(GoMenuUIType.RoomMenuUI);
+
+        // 5. 룸 메뉴 입장 후 설정
+        // 5.1 룸 메뉴의 방 이름 설정 위에서 이름 받아올 때 없으면 랜덤 처리로 자동 완료
+        // 5.2 플레이어 리스트 생성은 네트워크 매니저의 JoinedPlayerList를 통해 자동 생성
+
+        // 5.3 인게임스타트 버튼 활성화
+        m_lobbyMenuUIManager.ActivateStartInGameBtn(true);  //StartBtn은 방장만 켜지도록
+    }
+
+    // 방 조인
+
+
+
+    // 방 나가기
+
+    #endregion ======================================================================= /Button 클릭
+
+    // FindMenu 방 리스트 업데이트
+    public void UpdateFindMenuRoomList(List<RoomInfo> roomList)
+    {
+        m_findMenuRoomListManager.UpdateFindRoomMenuButtonList(roomList);
+    }
+
+    // 내가 방 만들었을 때 + 남이 들어왔을 때
+    public void JoinedPlayerList(Player[] players)
+    {
+        m_playerListManager.CreatePlayerListItem(players);
     }
 
     // 내가 들어간 상황
     public void OnJoinRoom(string roomName)
     {
-        string playerName = m_lobbyMenuUIManager.GetInputFieldPlayerName();
-        m_lobbyMenuUIManager.SetRoomMenuNameText(roomName);
-        m_networkManager.OnJoinRoom(roomName, playerName);
     }
 
-    // 방에 접속된 플레이어들(나도 포함이지만 실직적으로는 )
-    public void OnJoinedRoom(string playerName)
+    public void JoinLobby()
     {
-        m_playerListManager.OnJoinedRoom(playerName);
-    }
-
-    public void OnRoomLeave()
-    {
-        m_networkManager.OnRoomLeave();
-
-        m_findMenuRoomListManager.OnRoomLeave();
-        m_playerListManager.OnRoomLeave();
-
-        m_lobbyMenuUIManager.GoMenuUI(GoMenuUIType.MainMenuUI);
-    }
-
-    public void OnPlayerLeftRoom(string leftName)
-    {
-        string leftPlayerName = leftName;
-        m_playerListManager.OnPlayerLeftRoom(leftPlayerName);
-    }
-
-    // 제거와 생성
-    public void OnRoomListUpdate(bool isRemove, string roomName)
-    {
-        m_findMenuRoomListManager.OnRoomUpdateList(isRemove, roomName);
-    }
-
-    public void OnPlayerEnterted(string newplayerName)
-    {
-        m_playerListManager.EntertedPlayer(newplayerName);
-    }
-
-    // 플레이어의 닉네임 결정 필요
-    // 닉네임 부여되는 시기 결정(방 생성 클릭 시, 조인 버튼 클릭 시)
-    /*public void OnRoomCreate(string roomName)
-    {
-        if (roomName == "" || string.IsNullOrEmpty(roomName))
-        {
-            roomName = "RoomMenuUI" + UnityEngine.Random.Range(1000, 9999).ToString(); // 방 이름이 없을 경우 랜덤 숫자 생성
-        }
-
-        LobbyMenuUIManager.Instance.OnRoomCreate(roomName);
-
-        string playerNickName = LobbyMenuUIManager.Instance.GetPlayerNickNameTextEnterRoom();
-
-        LobbyNetworkManager.Instance.OnRoomCreate(roomName, playerNickName);
-
+        // TODO : 플레이어 리스트들 전부 초기화필요
+        m_playerListManager.AllRemove();
+        m_networkService.JoinLobby();
     }
 
 
-    // 본인이 방 나갔을 때
-    public void OnRoomLeave()
-    {
-        LobbyMenuUIManager.Instance.OnRoomLeave(PhotonNetwork.CurrentRoom.roomName);
-        LobbyNetworkManager.Instance.OnRoomLeave(PhotonNetwork.CurrentRoom.roomName);
-    }
-
-    // 상대방이 방을 떠났을 때 호출
-    public void OnPlayerLeftedRoom(string leftPlayerName)
-    {
-        LobbyMenuUIManager.Instance.OnPlayerListItemRemove(leftPlayerName);
-    }
-    // LobbyNetworkManager에서 방 생성 혹은 입장시 사용할 메서드
-    public void AddPlayerListWhenJoined(string createPlayerList)
-    {
-        LobbyMenuUIManager.Instance.OnPlayerListItemCreate(createPlayerList);
-    }
-
-    public void OnRoomRemove(string removeRoomName)
-    {
-        LobbyMenuUIManager.Instance.OnRoomRemove(removeRoomName);
-    }
-
-    public void FindRoomListCreate(string roomName)
-    {
-        LobbyMenuUIManager.Instance.HandleFindMenuRoomList(roomName);
-    }
-
-    public void OnJoinRoom(string roomName)
-    {
-        LobbyMenuUIManager.Instance.OnJoinRoom(roomName);
-
-        string playerName = LobbyMenuUIManager.Instance.GetPlayerNickNameTextEnterRoom();
-        LobbyNetworkManager.Instance.OnJoinRoom(roomName, playerName);
-    }
-
-    // LobbyNetworkManager에서 새로운 플레이어 입장 확인 시
-    */
 }

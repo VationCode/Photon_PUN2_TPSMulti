@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-//using DUS.Player.Locomotion;
+//using DUS.PlayerCore.Locomotion;
 public enum InputType
 {
     Keyboard,

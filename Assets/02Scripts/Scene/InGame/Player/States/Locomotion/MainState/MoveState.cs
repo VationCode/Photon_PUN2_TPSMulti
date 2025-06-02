@@ -1,4 +1,4 @@
-using DUS.Player.Locomotion;
+using DUS.PlayerCore.Locomotion;
 
 public class MoveState : LocomotionStrategyState
 {

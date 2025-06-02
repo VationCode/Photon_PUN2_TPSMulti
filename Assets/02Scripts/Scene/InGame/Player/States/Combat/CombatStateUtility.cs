@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using DUS.Player.Locomotion;
+using DUS.PlayerCore.Locomotion;
 using UnityEngine;
 
-namespace DUS.Player.Combat
+namespace DUS.PlayerCore.Combat
 {
     // 전투상태일 때의 메인 상태
     public enum CombatMainState
@@ -44,7 +44,7 @@ namespace DUS.Player.Combat
             {CombatSubFlags.Executing, "IsExecuting" },
         };
 
-        public void InitializeCreateCombat(PlayerCore player)
+        public void InitializeCreateCombat(global::PlayerCore player)
         {
 
             m_MainStrategyMap[CombatMainState.CombatIdle] = new CombatIdleState(player);

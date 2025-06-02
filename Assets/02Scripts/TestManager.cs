@@ -14,21 +14,21 @@ public class TestManager : MonoBehaviour
     private async void Start()
     {
         m_NextNeedAssetLabelList.Add("PlayerInfoList");
-        AssetLoadManager.Instance.SetNextSceneNeedAddressable(m_NextNeedAssetLabelList);
+        //AssetLoadManager.Instance.SetNextSceneNeedAddressable(m_NextNeedAssetLabelList);
         
-        bool isload = await AssetLoadManager.Instance.DownloadDependenciesAsync();
+        //bool isload = await AssetLoadManager.Instance.DownloadDependenciesAsync();
 
-        if (!isload) return;
+        //if (!isload) return;
         
         Debug.Log("[isLoad] Download 성공");
         
-        bool isMemory = await AssetLoadManager.Instance.LoadAssetsIntoMemoryAsync();
+        //bool isMemory = await AssetLoadManager.Instance.LoadAssetsIntoMemoryAsync();
 
-        if (!isMemory) return;
+        //if (!isMemory) return;
         Debug.Log("[isMemory] Download 성공");
-        foreach(var item in AssetLoadManager.Instance.m_SaveAddressKeyList)
+        foreach(var item in AssetLoadManager.Instance.m_downLoadedAddressables)
         {
-            AssetLoadManager.Instance.CreateAddressableAsset(item);
+            //AssetLoadManager.Instance.CreateAddressableAsset(item);
         }
     }
 

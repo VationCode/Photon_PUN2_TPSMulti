@@ -7,8 +7,8 @@
 
 // ========================================
 using UnityEngine;
-using DUS.Player.Locomotion;
-using DUS.Player.Combat;
+using DUS.PlayerCore.Locomotion;
+using DUS.PlayerCore.Combat;
 using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -130,7 +130,7 @@ public class PlayerCore : MonoBehaviour
 
         // 플레이어끼기 부딪혔을 때 흔들리는 네트워크 핑 문제 발생
         // 아예 충돌이 안되도록 차단
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Player"), true);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerCore"), LayerMask.NameToLayer("PlayerCore"), true);
 
         //m_Rigidbody.transform.position = Vector3.zero;
     }

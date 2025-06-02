@@ -1,5 +1,5 @@
 using UnityEngine;
-using DUS.Player.Locomotion;
+using DUS.PlayerCore.Locomotion;
 
 public class IdleState : LocomotionStrategyState
 {

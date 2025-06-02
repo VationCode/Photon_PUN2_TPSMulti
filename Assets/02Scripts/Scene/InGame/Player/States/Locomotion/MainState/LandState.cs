@@ -1,5 +1,5 @@
 using UnityEngine;
-using DUS.Player.Locomotion;
+using DUS.PlayerCore.Locomotion;
 
 //ย๘ม๖ ป๓ลย
 public class LandState : LocomotionStrategyState

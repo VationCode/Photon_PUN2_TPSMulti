@@ -1,34 +1,33 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+
+namespace DUS.Manager
 {
-    public static GameManager Instance { get; private set; }
-    public int m_StartCheck = -1;
-
-    private void Awake()
+    public class GameManager : MonoBehaviour
     {
-        if (Instance != null)
+        public static GameManager Instance { get; private set; }
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
-    public void SetStartCheck()
-    {
-        m_StartCheck = 0;
-    }
+        void Start()
+        {
+            // TODO : 시작 시 필요한 주요 리소스들은 미리 다운
 
-    void Start()
-    {
-        
-    }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 }

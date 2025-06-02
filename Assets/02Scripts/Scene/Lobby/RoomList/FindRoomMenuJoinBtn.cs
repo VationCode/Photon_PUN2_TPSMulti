@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FindRoomMenuRoomButtonItem : MonoBehaviour
+public class FindRoomMenuJoinBtn : MonoBehaviour
 {
     [SerializeField] Button m_btn;
     [SerializeField] TMP_Text m_RoomName;
@@ -12,7 +12,7 @@ public class FindRoomMenuRoomButtonItem : MonoBehaviour
         m_btn.onClick.AddListener(JoinRoom);
     }
 
-    public void SetRoomListInfo(string name)
+    public void SetBtnRoomName(string name)
     {
         m_RoomName.text = name;
     }

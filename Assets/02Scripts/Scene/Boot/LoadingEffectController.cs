@@ -4,12 +4,17 @@ using UnityEngine.UI;
 
 namespace DUS.AssetLoad
 {
-    public class LoadingProgress : MonoBehaviour
+    public class LoadingEffectController : MonoBehaviour
     {
         [SerializeField]
         Image m_progressBar;
 
        public Action<float> m_onProgress = null;
+
+        private void OnEnable()
+        {
+            
+        }
 
         private void Awake()
         {
@@ -22,7 +27,7 @@ namespace DUS.AssetLoad
             m_onProgress?.Invoke(0f);
         }
 
-        private void OnProgressing(float progress)
+        public void OnProgressing(float progress)
         {
             progress += Time.deltaTime * 0.1f;
             m_progressBar.fillAmount = Mathf.Clamp01(progress);

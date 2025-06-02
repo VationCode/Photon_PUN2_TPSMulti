@@ -4,7 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-namespace DUS.Player.Locomotion
+namespace DUS.PlayerCore.Locomotion
 {
     public enum LocomotionMainState
     {
@@ -51,7 +51,7 @@ namespace DUS.Player.Locomotion
             { LocomotionMainState.Climb, new string[]{"IsClimb" } },
             { LocomotionMainState.WallRun, new string[]{"IsWallRun" } }
         };
-        public void InitializeCreateMainStateMap(PlayerCore player)
+        public void InitializeCreateMainStateMap(global::PlayerCore player)
         {
             m_MainStrategyMap[LocomotionMainState.Idle] = new IdleState(player);
             m_MainStrategyMap[LocomotionMainState.Move] = new MoveState(player);
