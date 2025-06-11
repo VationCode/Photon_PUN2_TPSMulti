@@ -52,7 +52,7 @@ namespace DUS.scene
 
             m_NextScene = nextScene;
 
-            SceneManager.LoadSceneAsync((int)SceneType.Boot);
+            PhotonNetwork.LoadLevel((int)SceneType.Boot);
         }
 
         public void LoadNextScene()

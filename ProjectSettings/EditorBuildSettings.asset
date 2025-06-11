@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/01Scenes/00Boot.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/01Scenes/00Lobby.unity
+    path: Assets/01Scenes/01Lobby.unity
     guid: 1f5665f0d399dea488050e72941134ec
   - enabled: 1
     path: Assets/01Scenes/02InGame.unity
